@@ -16,7 +16,7 @@ import threading
 from sqlalchemy.ext.automap import automap_base, generate_relationship
 from sqlalchemy.orm import Session, aliased, scoped_session, sessionmaker, relationship
 from sqlalchemy.sql import text, func, and_, or_
-from sqlalchemy.types import Binary
+from sqlalchemy.types import LargeBinary as Binary
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy import create_engine, desc, asc, Table, Column, ForeignKey
 

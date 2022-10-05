@@ -1,0 +1,21 @@
+{
+    "editorConfig": {
+        "autoClosingBrackets": true,
+        "codeFolding": true,
+        "cursorBlinkRate": 530,
+        "fontFamily": null,
+        "fontSize": 16,
+        "insertSpaces": true,
+        "lineHeight": null,
+        "lineNumbers": true,
+        "lineWrap": "on",
+        "matchBrackets": true,
+        "readOnly": false,
+        "rulers": [],
+        "showTrailingSpace": false,
+        "tabSize": 4,
+        "wordWrapColumn": 80
+    },
+    "toolbar": []
+}
+

@@ -2,11 +2,9 @@ import io
 from PIL import Image
 import numpy as np
 import jpeg_ls as jls
-import jpeg_ls.CharLS
-from jpeg_ls import data_io
+#import jpeg_ls.CharLS
+#from jpeg_ls import data_io
 import sys
-import timeit
-from functools import lru_cache
 
 def blobFromImage(numpyImageArray, debug=False):
     """

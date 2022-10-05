@@ -1,5 +1,9 @@
 
+# pip install modules for setup HACK
+import pip
+pip.main(['install', 'numpy', 'Cython'])
 
+# imports for setup
 import sys
 
 import numpy as np
