@@ -1,12 +1,14 @@
 from backgroundGenerator import BackgroundGenerator
 from ImageHelper import imageFromBlob
 import numpy as np
+import pandas as pd
 import tensorflow as tf
+from typing import Callable
 import warnings
 
 # Yanick's comment on how he did this ? https://stackoverflow.com/questions/41276972/read-mysql-database-in-tensorflow/60717965#60717965
 
-def init_sets(datasetList: list, batchsize: int, chunksize: int, chunkPrefetch: int, mysqlSettings: dict, target_ids_mapping: dict, num_classes: int):
+def init_sets(datasetList: list, batchsize: int, chunksize: int, chunkPrefetch: int, mysqlSettings: dict, target_ids_mapping: dict, num_classes: int, img_preprocessing: Callable):
     # init training set
     itList = []
     for i, (label, _, dataset) in enumerate(datasetList):
@@ -20,7 +22,7 @@ def init_sets(datasetList: list, batchsize: int, chunksize: int, chunkPrefetch: 
                     chunksize=chunksize,
                     reserveFirst=False,
                     with_fl=False,
-                    prepareFunc=getPrepareFunc(with_fluorescence=False, label=target_ids_mapping[i])
+                    prepareFunc=getPrepareFunc(img_preprocessing, with_fluorescence=False, label=target_ids_mapping[i])
                 )
             )
     #trainingSet = get_train(itList, batchsize, num_classes)
@@ -36,7 +38,7 @@ def get_test(itList, batchsize, num_classes, testsetMode='fromFirstChunk'):
 
 # swisens func
 # preprocessing of images/fluorescence data
-def getPrepareFunc(label, with_fluorescence=False):
+def getPrepareFunc(img_preprocessing, label, with_fluorescence=False):
     def processFLColumn(x, mapping=lambda x: x):
         x = json.loads(x)
         result = []
@@ -47,13 +49,10 @@ def getPrepareFunc(label, with_fluorescence=False):
         result = [mapping(a) for a in result]
         return result
     def processDf(df):
-        df["img0"] = df["img0"].apply(imageFromBlob)
-        df["img0"] = df["img0"].apply(lambda x: np.array(x, dtype=float))
-        df["img0"] = df["img0"].apply(lambda x: x/(2**16-1))
-        
-        df["img1"] = df["img1"].apply(imageFromBlob)
-        df["img1"] = df["img1"].apply(lambda x: np.array(x, dtype=float))
-        df["img1"] = df["img1"].apply(lambda x: x/(2**16-1))
+        img0, img1 = img_preprocessing(df.img0, df.img1)
+        df = df.loc[df.index.isin(img0.index)]
+        df.img0 = img0
+        df.img1 = img1
         if with_fluorescence:
             df["avg"] = df["avg"].apply(
                 processFLColumn,
@@ -83,10 +82,11 @@ def datasetFromItList(itList, num_classes, batchsize, first=False, with_fluoresc
         if df is None:
             df = dfTmp
         else:
-            df = df.append(dfTmp)
-    print("Randomizing the sample in the set", flush=True)
+            #df = df.append(dfTmp)
+            df = pd.concat([df, dfTmp])
+    #print("Randomizing the sample in the set", flush=True)
     df = df.sample(frac=1).reset_index(drop=True) # NB df contains 12000 events(=250[events/(chunk*dataset)]*48[datasets])
-    print("Building TF-Dataset", flush=True)
+    #print("Building TF-Dataset", flush=True)
     if with_fluorescence:
         datasetData = tf.data.Dataset.from_tensor_slices(
             (

@@ -21,19 +21,19 @@ class BackgroundGenerator(multiprocessing.Process):
         self.start()
     
     def getFirst(self):
-        if not self.reserveFirst:
-            print("Warning: First is not reserved!")
-        print("Fetching first data...")
+        #if not self.reserveFirst:
+        #    print("Warning: First is not reserved!")
+        #print("Fetching first data...")
         ret = self.first.get()
         self.first.put_nowait(ret)
-        print("Data ready")
+        #print("Data ready")
         return ret
 
     def run(self):
         from mysqlInterface import MySqlConnector
         dataDB = MySqlConnector(**self.mysqlSettings)
         if self.with_fl:
-            print("Setting query with fluorescence!")
+            #print("Setting query with fluorescence!")
             self.query = dataDB.getDatasetDFQueryFLFast(self.dataset)
         else:
             self.query = dataDB.getDatasetDFQuery(self.dataset)
@@ -53,7 +53,7 @@ class BackgroundGenerator(multiprocessing.Process):
                 else:
                     self.queue.put(item)
             if self.autoRestart:
-                print("Restarting iterator", flush=True)
+                #print("Restarting iterator", flush=True)
                 self.generator = dbBatchGenerator(self.query, self.mysqlSettings, chunksize=self.chunksize, prepareFunc=self.prepareFunc)
             else:
                 self.queue.put(None)
@@ -63,9 +63,9 @@ class BackgroundGenerator(multiprocessing.Process):
         return self
 
     def __next__(self):
-            print("fetching data")
+            #print("fetching data")
             next_item = self.queue.get() #NB : stuck here
-            print("done")
+            #print("done")
             if next_item is None:
                  raise StopIteration
             return next_item
@@ -75,7 +75,7 @@ def dbBatchGenerator(query, mysqlSettings, chunksize, prepareFunc=None):
     res = query.limit(chunksize).all()
     while res is not None and len(res) > 0:
         i += 1
-        print("next batch elements: ", len(res), flush=True)
+        #print("next batch elements: ", len(res), flush=True)
         if prepareFunc is None:
             ret = pd.DataFrame(res)
             yield ret
@@ -84,7 +84,7 @@ def dbBatchGenerator(query, mysqlSettings, chunksize, prepareFunc=None):
             yield ret
         res = query.limit(chunksize).offset(i*chunksize).all()
     
-    print("Iterator Empty!!", flush=True)
+    #print("Iterator Empty!!", flush=True)
 
 # def dbBatchGenerator2(query, mysqlSettings, chunksize, prepareFunc=None, **kwargs):
 #     i = 0

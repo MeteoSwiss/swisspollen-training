@@ -7,7 +7,7 @@ RUN pip config set global.trusted-host "pypi.org files.pythonhosted.org pypi.pyt
 #RUN apt-get update && apt-get upgrade
 RUN pip3 install --upgrade pip
 
-RUN apt-get install python3.8-dev libmysqlclient-dev -y
+RUN apt-get install python3.8-dev libmysqlclient-dev libgl1 -y
 
 # install Python packages with pip
 RUN pip3 install clustimage \
@@ -18,6 +18,7 @@ RUN pip3 install clustimage \
 		mysqlclient \
 		mysql-connector-python \
 		numpy \
+		opencv-python \
 		pandas \
 		scikit-image \
 		scikit-learn \
