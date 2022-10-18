@@ -10,11 +10,11 @@ RUN pip3 install --upgrade pip
 RUN apt-get install python3.8-dev libmysqlclient-dev libgl1 -y
 
 # install Python packages with pip
+RUN pip3 install jupyterlab
 RUN pip3 install clustimage \
 		cython \
-		jupyterlab \
 		matplotlib \
-        myloginpath \
+                myloginpath \
 		mysqlclient \
 		mysql-connector-python \
 		numpy \
@@ -24,18 +24,19 @@ RUN pip3 install clustimage \
 		scikit-learn \
 		scipy \
 		SQLAlchemy \
-		tqdm \
-#		jupyterlab-topbar \
+		tqdm
+RUN pip3 install jupyterlab-topbar \
 		jupyter-resource-usage \
 		jupyterlab_execute_time \
 		jupyterlab-system-monitor \
-		jupyterlab-horizon-theme
+		jupyterlab-horizon-theme \
+                jupyterlab_nvdashboard
 
 # install more requirements
-#ADD requirements.txt .
-#RUN pip3 install -r requirements.txt
-ADD dependencies/CharPyLS-master/ CharPyLS-master/
-RUN pip3 install -e CharPyLS-master/
+#ADD requirements.txt tmp/
+#RUN pip3 install -r tmp/requirements.txt
+ADD dependencies/CharPyLS-master/ tmp/CharPyLS-master/
+RUN pip3 install tmp/CharPyLS-master/
 
 ADD config/.mylogin.cnf .
 

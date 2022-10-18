@@ -8,7 +8,7 @@
         "insertSpaces": true,
         "lineHeight": null,
         "lineNumbers": true,
-        "lineWrap": "on",
+        "lineWrap": "off",
         "matchBrackets": true,
         "readOnly": false,
         "rulers": [],
