@@ -4,15 +4,20 @@ ENV http_proxy http://proxy.meteoswiss.ch:8080
 ENV https_proxy http://proxy.meteoswiss.ch:8080
 RUN pip config set global.trusted-host "pypi.org files.pythonhosted.org pypi.python.org"
 
-#RUN apt-get update && apt-get upgrade
 RUN pip3 install --upgrade pip
 
-RUN apt-get install python3.8-dev libmysqlclient-dev libgl1 -y
+RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/tensorRT.list
+RUN apt-get update --fix-missing
+#RUN apt upgrade -y
+
+RUN apt-get install python3.8-dev libmysqlclient-dev libgl1 ca-certificates -y
 
 # install Python packages with pip
 RUN pip3 install jupyterlab
 RUN pip3 install clustimage \
 		cython \
+		dask \
+		loky \
 		matplotlib \
                 myloginpath \
 		mysqlclient \
@@ -23,6 +28,7 @@ RUN pip3 install clustimage \
 		scikit-image \
 		scikit-learn \
 		scipy \
+		simplejson \
 		SQLAlchemy \
 		tqdm
 RUN pip3 install jupyterlab-topbar \
@@ -35,9 +41,18 @@ RUN pip3 install jupyterlab-topbar \
 # install more requirements
 #ADD requirements.txt tmp/
 #RUN pip3 install -r tmp/requirements.txt
+
+# install local requirements
 ADD dependencies/CharPyLS-master/ tmp/CharPyLS-master/
 RUN pip3 install tmp/CharPyLS-master/
 
+ADD dependencies/poleno-db-interface/ tmp/poleno-db-interface/
+RUN pip3 install tmp/poleno-db-interface/
+
+ADD dependencies/poleno-ml/ tmp/poleno-ml/
+RUN pip3 install tmp/poleno-ml/
+
+# add config file
 ADD config/.mylogin.cnf .
 
 # setup jupyterlab user-preferences, theme, and settings

@@ -1,5 +1,8 @@
 config/.mylogin.cnf
 chgData.py
+models/
+Dockerfile.save
+tests*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

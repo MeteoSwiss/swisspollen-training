@@ -1,0 +1,6 @@
+[submodule "dependencies/poleno-db-interface"]
+	path = dependencies/poleno-db-interface
+	url = http://gitlab.swisensdata.ch/swisens/poleno/software/poleno-db-interface.git
+[submodule "dependencies/poleno-ml"]
+	path = dependencies/poleno-ml
+	url = http://gitlab.swisensdata.ch/swisens/poleno/software/poleno-ml.git
