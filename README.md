@@ -8,6 +8,6 @@ If the Dockerfile has been modified, you need to re-build your Docker image usin
 
 Use the following to start a Docker container and the Jupyter Lab server:
 
-```docker run -it --gpus all --rm -v `pwd`:/tf/home/ -p <dest_port>:8888 <user>/swisspollen-training```
+```docker run -it --gpus all --rm -v `pwd`:/tf/home/ -p <dest_port>:8888 -p <dest_port2>:6006 <user>/swisspollen-training```
 
 Then open your local web browser and connect to the server with address `localhost:<dest_port>`. Note that `<dest_port>` should be forwarded in your SSH connection.
