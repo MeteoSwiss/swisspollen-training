@@ -30,6 +30,7 @@ RUN pip3 install clustimage \
 		scipy \
 		simplejson \
 		SQLAlchemy \
+		tensorflow-addons \
 		tqdm
 RUN pip3 install jupyterlab-topbar \
 		jupyter-resource-usage \
