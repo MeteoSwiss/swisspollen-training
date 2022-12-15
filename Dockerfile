@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM tensorflow/tensorflow:latest-gpu-jupyter
+FROM tensorflow/tensorflow:2.9.3-gpu-jupyter
 ENV http_proxy http://proxy.meteoswiss.ch:8080
 ENV https_proxy http://proxy.meteoswiss.ch:8080
 RUN pip config set global.trusted-host "pypi.org files.pythonhosted.org pypi.python.org"
