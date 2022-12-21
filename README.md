@@ -111,3 +111,48 @@ All files related to a model's training will be saved to `/tf/home/models/<model
 - Instead of training 2 parallel networks (1 per holo image) and concat their results, try to stack the inputs to have a 3D input with 2 channels.
 - Try the objectosphere loss.
 - Explain the model with techniques such as [this one](https://towardsdatascience.com/understanding-your-convolution-network-with-visualizations-a4883441533b).
+
+## Setup a new Docker environment
+
+### Links
+
+- https://www.tensorflow.org/install/docker?hl=fr
+- https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit
+- ( https://phoenixnap.com/kb/install-docker-on-ubuntu-20-04 )
+- https://docs.docker.com/config/daemon/systemd/#httphttps-proxy
+
+### Install Docker
+```
+sudo apt update
+sudo apt-get remove docker docker-engine docker.io
+( sudo snap install docker )
+sudo apt install docker.io
+docker --version
+```
+If you do not want to use sudo each time:
+https://docs.docker.com/engine/install/linux-postinstall/
+
+### Setting up NVIDIA Container Toolkit
+```
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+      && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
+            sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo apt-get update
+sudo apt-get install -y nvidia-docker2
+sudo systemctl restart docker
+```
+
+### Proxy
+```
+sudo mkdir -p /etc/systemd/system/docker.service.d
+sudo nano /etc/systemd/system/docker.service.d/http-proxy.conf
+	and write the following lines:
+		[Service]
+		Environment="HTTP_PROXY=http://proxy.meteoswiss.ch:8080/"
+		Environment="HTTPS_PROXY=http://proxy.meteoswiss.ch:8080/"
+sudo systemctl daemon-reload
+sudo systemctl show --property Environment docker
+sudo systemctl restart docker
+```
