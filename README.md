@@ -99,3 +99,15 @@ A quick note about modification of these dependencies' code. If modifying these 
 ```
     
 All files related to a model's training will be saved to `/tf/home/models/<model_name>/`. The cached training and validation sets, logs, and checkpoints are saved to `training/`. The trained model and its information file (`model_info.json`) are saved to `model/`. The model's predictions for a validation period are saved as CSV files to `eval/`.
+  
+## Ideas of things to try
+  
+- Try different image normalization (e.g. remove the mean pixel value).
+- Try different data augmentation techniques, data preprocessing and filters.
+- Train the models by swapping dataset collections in and out. Try different combinations.
+- Train with an additional "trash" class.
+- Train a binary neural network (or clustering algorithm) to replace filters which would separate "trash" from relevant particles.
+- Try other ConvNet architectures.
+- Instead of training 2 parallel networks (1 per holo image) and concat their results, try to stack the inputs to have a 3D input with 2 channels.
+- Try the objectosphere loss.
+- Explain the model with techniques such as [this one](https://towardsdatascience.com/understanding-your-convolution-network-with-visualizations-a4883441533b).
