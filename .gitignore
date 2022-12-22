@@ -3,6 +3,7 @@ chgData.py
 models/
 Dockerfile.save
 tests*
+validation_input/cache*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
