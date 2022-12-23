@@ -1,5 +1,9 @@
 # swisspollen-training
 
+## Potential issue
+
+- Previous models had two inputs named `input_1` and `input_2`. The new models' inputs are named `rec0` and `rec1` and the last layer's named `target`.
+
 ## SSH
 
 SSH config example:
@@ -45,7 +49,7 @@ This project requires three external dependencies:
 
 The code of CharPyLS is static in the `dependencies/` folder. The code of the two Swisens dependencies is NOT pushed on this repository. They are both "submodules" which means cloning this GitHub repository should recursively clone the two submodules.
 
-<u>BUT</u> changes were made to the poleno-ml code (in `GPU3:/scratch/chg/swisspollen-training/`). Ideally, those changes should be submitted to Swisens through a pull request. They could then review the modifications before accepting and merging them to the main branch. These changes are necessary to run the training and validation code so it's essential to not override them until they're pushed to Swisens' GitLab.
+<u>BUT</u> changes were made to the poleno-ml code (in `GPU3:/scratch/chg/swisspollen-training/dependencies/poleno-ml/poleno_ml/database/query_interface_ml.py`). Ideally, those changes should be submitted to Swisens through a pull request. They could then review the modifications before accepting and merging them to the main branch. These changes are necessary to run the training and validation code so it's essential to not override them until they're pushed to Swisens' GitLab.
 
 A quick note about modification of these dependencies' code. If modifying these codes from the Docker container, you'll need to make the changes to the /tmp/<dependency>/ files for them to take effect (and probably re-run a !pip install from the code). For these modifications to be saved after the container is killed, duplicate them to the dependencies/<dependency>/ files.
 
@@ -99,8 +103,13 @@ A quick note about modification of these dependencies' code. If modifying these 
 ```
     
 All files related to a model's training will be saved to `/tf/home/models/<model_name>/`. The cached training and validation sets, logs, and checkpoints are saved to `training/`. The trained model and its information file (`model_info.json`) are saved to `model/`. The model's predictions for a validation period are saved as CSV files to `eval/`.
+
+## Currently trained models
+
+- `real1_bis`: trained on the "newly" cleaned pollen datasets, and the "other" and "spores" collections.
+- `real2`: trained on the same data as `real1_bis` but with data augmentation.
   
-## Ideas of things to try
+## Things to try
   
 - Try different image normalization (e.g. remove the mean pixel value).
 - Try different data augmentation techniques, data preprocessing and filters.
@@ -111,6 +120,7 @@ All files related to a model's training will be saved to `/tf/home/models/<model
 - Instead of training 2 parallel networks (1 per holo image) and concat their results, try to stack the inputs to have a 3D input with 2 channels.
 - Try the objectosphere loss.
 - Explain the model with techniques such as [this one](https://towardsdatascience.com/understanding-your-convolution-network-with-visualizations-a4883441533b).
+- Try ensemble classifiers (use multiple models and vote for the prediction).
 
 ## Setup a new Docker environment
 
