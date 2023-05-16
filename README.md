@@ -116,7 +116,7 @@ All files related to a model's training will be saved to `/tf/home/models/<model
 - Train the models by swapping dataset collections in and out. Try different combinations.
 - Train with an additional "trash" class.
 - Train a binary neural network (or clustering algorithm) to replace filters which would separate "trash" from relevant particles.
-- Try other ConvNet architectures.
+- Try other ConvNet architectures -> the model architecture does not have too many influence on the final performance
 - Instead of training 2 parallel networks (1 per holo image) and concat their results, try to stack the inputs to have a 3D input with 2 channels.
 - Try the objectosphere loss.
 - Explain the model with techniques such as [this one](https://towardsdatascience.com/understanding-your-convolution-network-with-visualizations-a4883441533b).
@@ -130,6 +130,7 @@ All files related to a model's training will be saved to `/tf/home/models/<model
 - https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit
 - ( https://phoenixnap.com/kb/install-docker-on-ubuntu-20-04 )
 - https://docs.docker.com/config/daemon/systemd/#httphttps-proxy
+- (MCH-os) Useful resource and results about training and reanalysis: ***M:\pay-prod\pollen\model_calibration_gju***
 
 ### Install Docker
 ```
